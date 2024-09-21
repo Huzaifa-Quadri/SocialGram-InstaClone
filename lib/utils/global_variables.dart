@@ -1,0 +1,2 @@
+
+const webScreenwidthSize = 600;
