@@ -6,7 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/resources/auth.dart';
 import 'package:instagram_clone/responsive/app_screen_layout.dart';
-import 'package:instagram_clone/responsive/reponsive_layout.dart';
+import 'package:instagram_clone/responsive/responsive_layout.dart';
 import 'package:instagram_clone/responsive/web_screen_layout.dart';
 
 import 'package:instagram_clone/utils/theme_layout.dart';
@@ -21,8 +21,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final TextEditingController _registerEmailcontroller =
-      TextEditingController();
+  final TextEditingController _registerEmailcontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
   final TextEditingController _biocontroller = TextEditingController();
   final TextEditingController _usernamecontroller = TextEditingController();
@@ -69,7 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) {
-            return const ReponsiveLayoutScreen(
+            return const ResponsiveLayoutScreen(
               appScreenLayout: AppScreenLayout(),
               webScreenLayout: WebScreenLayout(),
             );

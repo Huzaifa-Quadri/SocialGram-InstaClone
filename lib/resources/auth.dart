@@ -49,4 +49,26 @@ class AuthMethodFirebaseLogic{
     return res;
   }
 
+  //* User Sign in Logic
+  Future<String> signInUser({
+    required email,
+    required password,
+  }) async {
+    String res = "Some error occured";
+    try {
+      //* signing in user after firebase authentication with email and password
+      if (email.isNotEmpty || password.isNotEmpty) {
+        UserCredential cred = await _auth.signInWithEmailAndPassword(email: email, password: password);
+        //? No need for usercredentials for now
+
+        res = "success";
+      } else {
+        return "Please Enter the Credentials";
+      }
+    } catch (thrownerror) {
+      res = thrownerror.toString();
+    }
+    return res;
+  }
+
 }

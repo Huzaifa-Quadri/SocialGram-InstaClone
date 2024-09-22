@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/utils/global_variables.dart';
 
-class ReponsiveLayoutScreen extends StatefulWidget {
+class ResponsiveLayoutScreen extends StatefulWidget {
   final Widget webScreenLayout;
   final Widget appScreenLayout;
 
-  const ReponsiveLayoutScreen({
+  const ResponsiveLayoutScreen({
       super.key,
       required this.webScreenLayout,
       required this.appScreenLayout,
     });
 
   @override
-  State<ReponsiveLayoutScreen> createState() => _ReponsiveLayoutScreenState();
+  State<ResponsiveLayoutScreen> createState() => _ResponsiveLayoutScreenState();
 }
 
-class _ReponsiveLayoutScreenState extends State<ReponsiveLayoutScreen> {
+class _ResponsiveLayoutScreenState extends State<ResponsiveLayoutScreen> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
