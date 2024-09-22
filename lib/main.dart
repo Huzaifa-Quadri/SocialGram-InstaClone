@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/responsive/app_screen_layout.dart';
-import 'package:instagram_clone/responsive/reponsive_layout.dart';
-import 'package:instagram_clone/responsive/web_screen_layout.dart';
+import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/utils/theme_layout.dart';
 
 void main() {
@@ -19,11 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),
-      home: const ReponsiveLayoutScreen(
-        appScreenLayout: AppScreenLayout(),
-        webScreenLayout: WebScreenLayout(),
+      home: const LoginScreen()
         
-      ),
     );
   }
 }

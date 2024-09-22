@@ -5,10 +5,11 @@ class ReponsiveLayoutScreen extends StatefulWidget {
   final Widget webScreenLayout;
   final Widget appScreenLayout;
 
-  const ReponsiveLayoutScreen(
-      {super.key,
+  const ReponsiveLayoutScreen({
+      super.key,
       required this.webScreenLayout,
-      required this.appScreenLayout});
+      required this.appScreenLayout,
+    });
 
   @override
   State<ReponsiveLayoutScreen> createState() => _ReponsiveLayoutScreenState();
