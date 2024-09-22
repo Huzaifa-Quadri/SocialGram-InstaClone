@@ -1,8 +1,16 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/resources/auth.dart';
+import 'package:instagram_clone/responsive/app_screen_layout.dart';
+import 'package:instagram_clone/responsive/reponsive_layout.dart';
+import 'package:instagram_clone/responsive/web_screen_layout.dart';
 
 import 'package:instagram_clone/utils/theme_layout.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -13,11 +21,73 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final TextEditingController _registerEmailcontroller =TextEditingController();
+  final TextEditingController _registerEmailcontroller =
+      TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
   final TextEditingController _biocontroller = TextEditingController();
   final TextEditingController _usernamecontroller = TextEditingController();
- 
+  Uint8List? _img;
+
+  bool isLoading = false;
+
+  void _selectImage() async {
+    Uint8List? imgall = await pickImage(ImageSource.camera);
+
+    setState(() {
+      _img = imgall;
+    });
+  }
+
+  void _signUp() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    if (_img == null) {
+      showSnackBar(context, "Please Select an Image");
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+    String res = await AuthMethodFirebaseLogic().signUpUser(
+      email: _registerEmailcontroller.text,
+      password: _passwordcontroller.text,
+      username: _usernamecontroller.text,
+      bio: _biocontroller.text,
+      file: _img!,
+    );
+
+    print(res);
+    
+
+      if (res == "success") {
+        if (mounted) {
+              setState(() {
+                isLoading = false;
+              });
+
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) {
+            return const ReponsiveLayoutScreen(
+              appScreenLayout: AppScreenLayout(),
+              webScreenLayout: WebScreenLayout(),
+            );
+          },
+        ));
+        showSnackBar(context, "Success");
+        _registerEmailcontroller.clear();
+        _usernamecontroller.clear();
+        _biocontroller.clear();
+        _passwordcontroller.clear();
+      } else {
+        showSnackBar(context, res);
+        _registerEmailcontroller.clear();
+        _passwordcontroller.clear();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,15 +115,21 @@ class _SignupScreenState extends State<SignupScreen> {
 
               Stack(
                 children: [
-                  const CircleAvatar(
-                          foregroundImage: NetworkImage('https://cdn.pixabay.com/photo/2023/04/07/05/59/woman-7905583_1280.jpg'),
+                  _img == null
+                      ? const CircleAvatar(
+                          foregroundImage: NetworkImage(
+                              'https://cdn.pixabay.com/photo/2023/04/07/05/59/woman-7905583_1280.jpg'),
+                          radius: 64,
+                        )
+                      : CircleAvatar(
+                          foregroundImage: MemoryImage(_img!),
                           radius: 64,
                         ),
                   Positioned(
                     left: 80,
                     bottom: -10,
                     child: IconButton(
-                      onPressed: (){},
+                      onPressed: _selectImage,
                       icon: const Icon(Icons.camera_alt_sharp),
                     ),
                   ),
@@ -91,7 +167,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
               //todo login button
               InkWell(
-                onTap: (){},
+                onTap: _signUp,
                 child: Container(
                   alignment: Alignment.center,
                   width: double.infinity,
@@ -103,7 +179,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       Radius.circular(7),
                     )),
                   ),
-                  child: const Text("Sign Up"),
+                  child: isLoading ? const CircularProgressIndicator() : const Text("Sign Up"),
                 ),
               ),
               const Gap(12),
