@@ -16,12 +16,12 @@ void main() async{
     if (kIsWeb) {
       await Firebase.initializeApp(
         options: const FirebaseOptions(
-            apiKey: "AIzaSyBUyGLAhUWJjt_HUr9kzhCRnaPECPa2PzE",
-            authDomain: "instagram-clone-3941b.firebaseapp.com",
-            projectId: "instagram-clone-3941b",
-            storageBucket: "instagram-clone-3941b.appspot.com",
-            messagingSenderId: "10702548179",
-            appId: "1:10702548179:web:cb184a6617a2acea56f826"
+            apiKey: "...",  //Hidden for Security reasons
+            authDomain: "...",
+            projectId: "...",
+            storageBucket: "...",
+            messagingSenderId: "...",
+            appId: "..."
           ),
       );
     } else {
@@ -70,12 +70,12 @@ class MyApp extends StatelessWidget {
           //! home: const LoginScreen(), //=> In casy of any error(uncomment this line & comment all above)
           /*
         *1. stream: FirebaseAuth.instance.idTokenChanges(), //1st technique -> User token changes or sign in in a new device logout, etc
-        *2. stream: FirebaseAuth.instance.userChanges(),  //2nd technique -> all things in 1st method + chnage on update email, change password, etc
+        *2. stream: FirebaseAuth.instance.userChanges(),  //2nd technique -> all things in 1st method + change on update email, change password, etc
         *3. stream: FirebaseAuth.instance.authStateChanges() //3rd and (simple technique) -> Only runs when user is sign in or sign out
         */
           //* Have to implement persisting user state cuz whenever user will open the app it will sṭart from login screen and not home screen
           //* we want it to check if user is verified by auth and then allow it it directly jump to home screen with not loggin in again
-          //? With other database or node.js we have to store other uid or unique identifier in apps memory and then get it everytime and check if user is authenticated or not but firebase instead prvide us some direct imepmenatation methods
+          //? With other database or node.js we have to store other uid or unique identifier in apps memory and then get it everytime and check if user is authenticated or not but firebase instead prvide us some direct implementation methods
     );
   }
 }

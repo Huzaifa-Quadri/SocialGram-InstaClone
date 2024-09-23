@@ -2,11 +2,12 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:instagram_clone/resources/storage_method.dart';
+import 'package:instagram_clone/models/user.dart' as custommodel;
 
-class AuthMethodFirebaseLogic{
+class AuthMethodFirebaseLogic {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-   
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   //Signup user
   Future<String> signUpUser({
     required String email,
@@ -30,16 +31,28 @@ class AuthMethodFirebaseLogic{
         print(cred.user!.uid);
 
         //* add user to firebase database
-        
-        await _firestore.collection('users').doc(cred.user!.uid).set({  //Outscoring the json formation of user model
-          'username': username,
-          'uid': cred.user!.uid,
-          'email': email,
-          'bio': bio,
-          'followers': [],
-          'followings': [],
-          'imageURL': imageUrl  //* putting image url for later refferencing
-        });
+
+        custommodel.User user = custommodel.User(   
+          email: email, 
+          uid: cred.user!.uid, 
+          photoUrl: imageUrl,
+          username: username, 
+          bio: bio, 
+          followers: [], 
+          following: []
+        );
+
+        await _firestore.collection('users').doc(cred.user!.uid).set(user.toJson());  //* Creating map object of user after creating user model in different class and refferencing to it
+
+        // await _firestore.collection('users').doc(cred.user!.uid).set({  //Traditional object passing by making object in function call
+        //   'username': username,
+        //   'uid': cred.user!.uid,
+        //   'email': email,
+        //   'bio': bio,
+        //   'followers': [],
+        //   'followings': [],
+        //   'imageURL': imageUrl
+        // });
 
         res = "success";
       }
@@ -70,5 +83,5 @@ class AuthMethodFirebaseLogic{
     }
     return res;
   }
-
+  
 }
