@@ -8,6 +8,29 @@ class AuthMethodFirebaseLogic {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  //Getting USer details from firebase - implemented by a state management using provider
+  Future<custommodel.User> getUserDetails() async {
+    //* We will recieve details of user according to our model from firebase
+    User currentuser = _auth.currentUser!;
+
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentuser.uid)
+      .get();
+
+    // return custommodel.User(     //? We would've to do for every property so we outscore it by making it in custom model(in users.dart) to save our time
+    //   email: (snap.data() as Map<String, dynamic>)['email'],
+    //   uid: (snap.data() as Map<String, dynamic>)['uid'],
+    //   photoUrl: (snap.data() as Map<String, dynamic>)['photoUrl'],
+    //   username: ...,
+    //   bio: ...,
+    //   followers: ...,
+    //   following: ...
+    // );
+    //*Alternative
+    return custommodel.User.passingValue_fromSnap(snap);
+  }
+
   //Signup user
   Future<String> signUpUser({
     required String email,
@@ -83,5 +106,5 @@ class AuthMethodFirebaseLogic {
     }
     return res;
   }
-  
+
 }

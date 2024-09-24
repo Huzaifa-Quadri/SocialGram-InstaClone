@@ -11,7 +11,8 @@ class StorageMethod {
     
     Reference ref =_storage.ref().child(childName).child(_auth.currentUser!.uid);
 
-    UploadTask uploadtask = ref.putData(img);   //? putting or uploading file at refferenced location
+    UploadTask uploadtask = ref.putData(img);   //? putting or uploading file at refferenced location 
+                                                //? putData function is specifically used for Uint8List file and can also contain metadata about image
 
     TaskSnapshot snap = await uploadtask;       //? Process and storing snapshot of upoloading image task to drawout Download URL
     String downloadUrl = await snap.ref.getDownloadURL();
