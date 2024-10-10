@@ -1,9 +1,7 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/models/user.dart' as custommodel;
-import 'package:instagram_clone/providers/userprovider.dart';
-import 'package:provider/provider.dart';
+import 'package:instagram_clone/screens/add_post.dart';
+import 'package:instagram_clone/utils/theme_layout.dart';
 
 class AppScreenLayout extends StatefulWidget {
   const AppScreenLayout({super.key});
@@ -14,39 +12,67 @@ class AppScreenLayout extends StatefulWidget {
 
 class _AppScreenLayoutState extends State<AppScreenLayout> {
   String? username;
+  int _page = 2;
+  late PageController pagecontroller;
 
-  /*
-  * No need for this after setting up provider - it only fetches data once for app and provider data to app as per need
+  void onTappedNav(int index) {
+    pagecontroller.jumpToPage(index);
+  }
+
+  void onPageChanged(int page) {
+    setState(() {
+      _page = page;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-  getUsername();
+    pagecontroller = PageController();
   }
-  void getUsername() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      username = (snap.data() as Map<String, dynamic>)['username'];
-    });
-
+  
+  @override
+  void dispose() {
+    super.dispose();
+    pagecontroller.dispose();
   }
-  */
 
   @override
   Widget build(BuildContext context) {
-    custommodel.User user = Provider.of<UserProvider>(context).getUser;  //! Value is getting null before initialized, to be solved later
-    //with this provider (state management) we can acces any data property anywhere in our app
 
     return Scaffold(
-      body: Center(
-        child: Text(
-          "Username : ${user.username}\nEmail : ${user.email}",
-          style: const TextStyle(color: Colors.white
-          ),
-        ),
+      body: PageView(
+        controller: pagecontroller,
+        onPageChanged: onPageChanged,
+        physics: const NeverScrollableScrollPhysics(),
+        children: const [
+          Center(child: Text('HomeScreen')),
+          Center(child: Text('Search')),
+          AddPostScreen(),
+          Center(child: Text('Notify')),
+          Center(child: Text('profile')),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        selectedItemColor: primaryColor,
+        unselectedItemColor: secondaryColor,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _page,
+        onTap: onTappedNav,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(FluentIcons.home_12_filled), label: "Home"),
+          BottomNavigationBarItem(
+              icon: Icon(FluentIcons.search_12_regular), label: "Search"),
+          BottomNavigationBarItem(
+              icon: Icon(FluentIcons.add_circle_12_regular), label: "Post"),
+          BottomNavigationBarItem(
+              icon: Icon(FluentIcons.heart_12_filled), label: "Reel"),
+          BottomNavigationBarItem(
+              icon: Icon(FluentIcons.person_12_filled), label: "Profile"),
+        ],
       ),
     );
   }
