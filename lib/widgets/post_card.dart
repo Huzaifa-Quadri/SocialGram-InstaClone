@@ -5,7 +5,8 @@ import 'package:instagram_clone/utils/theme_layout.dart';
 import 'package:flutter/material.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({super.key});
+  final snap;
+  const PostCard({super.key, required this.snap});
 
   @override
   Widget build(BuildContext context) {
@@ -20,41 +21,62 @@ class PostCard extends StatelessWidget {
                 // .copyWith(right: 5),
             child: Row(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 20,
                   foregroundImage: NetworkImage(
-                      "https://pixabay.com/photos/butterfly-insect-wings-flower-9093549"),
+                      snap['profImage'],  
+                    ),
                 ),
                 const Gap(10),
-                const Expanded(
+                Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "username_jo_bhi",
-                        style: TextStyle(
+                        snap['username'],
+                        style: const TextStyle(
                             fontSize: 12, fontWeight: FontWeight.bold),
                       )
                     ],
                   ),
                 ),
                 const Spacer(),
-                //todo:  show dialog options - delete, hide, report
-                IconButton(onPressed: (){}, icon: const Icon(Icons.more_vert_sharp)),
+                //todo:  make delete option work
+                IconButton(onPressed: (){
+                  showDialog(context: context, builder: (context) => Dialog(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shrinkWrap: true,
+                      children: [
+                        'Delete',
+                        'Hide',
+                        'Report'
+                      ].map((e) => InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          child: Text(e),
+                        ),
+                      )).toList()
+                    ),
+                  ));
+                }, 
+                icon: const Icon(Icons.more_vert_sharp),
+                ),
               ],
             ),
           ),
-          //! Here shows the post Image
+          //* Here shows the post Image
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
-            child: Image.network('https://media.istockphoto.com/id/849220498/photo/blue-tiger-butterfly-on-a-pink-zinnia-flower-with-green-background.jpg?s=2048x2048&w=is&k=20&c=DhUuivmZdPCeouDU5mmE6l8LsgwQtzo_53ucJNmvYp8=', fit: BoxFit.cover,),
+            child: Image.network(snap['postUrl'], fit: BoxFit.cover,),
           ),
           Row(
             children: [
               IconButton(onPressed: (){}, icon:const Icon(Icons.favorite)), //? Like Button
-              const Text('0', style: TextStyle(fontSize: 10),),
+               Text('${snap['likes'].length}', style: const TextStyle(fontSize: 15),),
               const Gap(10),
               InkWell(    //Comment Button
                 onTap: () {},
@@ -74,23 +96,23 @@ class PostCard extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: RichText(text: const TextSpan(
-              style: TextStyle(
+            child: RichText(text: TextSpan(
+              style: const TextStyle(
                 fontSize: 15,
                 color: primaryColor,
               ),
               children: [
                 TextSpan(
-                  text: 'User_jobhi',
-                  style: TextStyle(fontWeight: FontWeight.bold)
+                  text: snap['username'],
+                  style: const TextStyle(fontWeight: FontWeight.bold)
                 ),
-                TextSpan(
+                const TextSpan(
                   text: "   ",
                   style: TextStyle(fontWeight: FontWeight.bold)
                 ),
                 TextSpan(
-                  text: "Today's Weather is great",
-                  style: TextStyle(fontWeight: FontWeight.bold)
+                  text: snap['description'],
+                  style: const TextStyle(fontWeight: FontWeight.bold)
                 )
               ]
             )),
