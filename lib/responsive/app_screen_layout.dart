@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/screens/add_post.dart';
+import 'package:instagram_clone/screens/home_feed_screen.dart';
 import 'package:instagram_clone/utils/theme_layout.dart';
 
 class AppScreenLayout extends StatefulWidget {
@@ -46,7 +47,7 @@ class _AppScreenLayoutState extends State<AppScreenLayout> {
         onPageChanged: onPageChanged,
         physics: const NeverScrollableScrollPhysics(),
         children: const [
-          Center(child: Text('HomeScreen')),
+          HomeScreen(),
           Center(child: Text('Search')),
           AddPostScreen(),
           Center(child: Text('Notify')),
