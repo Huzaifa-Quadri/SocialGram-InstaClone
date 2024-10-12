@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instagram_clone/models/comment.dart';
 import 'package:instagram_clone/models/post.dart';
 import 'package:instagram_clone/resources/storage_method.dart';
 import 'package:uuid/uuid.dart';
@@ -17,8 +18,7 @@ class FireStoreMethods {
   ) async {
     String res = "Some error Occured";
     try {
-      String postUrl =
-          await StorageMethod().uploadImagetoStorage('posts', postImg, true);
+      String postUrl = await StorageMethod().uploadImagetoStorage('posts', postImg, true);
       String postId = const Uuid().v1();
 
       Post post = Post(
@@ -57,5 +57,39 @@ class FireStoreMethods {
     } catch (err) {
       print("This is Why Post like Mechanism is not working : ${err.toString()}");
     }
+  }
+
+  Future<String> postComment(
+    String postId, 
+    String text, 
+    String userid, 
+    String username, 
+    String profileImg,
+  )async{
+    String res = "Comment not posted";
+
+    try {
+      String commentId = const Uuid().v1();
+
+      Comment comment = Comment(
+        uid: userid,
+        profImg: profileImg, 
+        commentId: commentId, 
+        username: username, 
+        commentText: text, 
+        datePublished: DateTime.now(), 
+        // cmtLike: likes
+      );
+
+      await _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).set(comment.toJson()); 
+      //? creating a subcollection named 'comment' inside posts collection to store comment and relevant data
+
+      res = "success";
+    } catch (e) {
+      print(e.toString());
+      res = e.toString();
+    }
+
+    return res;
   }
 }
