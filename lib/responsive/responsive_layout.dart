@@ -26,28 +26,6 @@ class _ResponsiveLayoutScreenState extends State<ResponsiveLayoutScreen> {
     addData();
   }
 
-  //? Old approach - giving error [null check operator used on null value as screen was loaded before data was fetched]
-  //todo: To be deleted in next commit
-  // void addData() async {
-  //   UserProvider userprovider = Provider.of(context, listen: false);  //* Need to run refresh user somewhere for user gets updated unless if we print the value of user with userprovider we will get null value
-  //
-  //   await userprovider.refreshUser();
-  // }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return LayoutBuilder(
-  //     builder: (context, constraints) {
-
-  //       if (constraints.maxWidth > webScreenwidthSize) {
-  //         return widget.webScreenLayout;
-  //       }
-
-  //       return widget.appScreenLayout;
-  //     },
-  //   );
-  // }
-
   //? Fetch the user data from the provider asynchronously
   void addData() async {
     UserProvider userProvider = Provider.of<UserProvider>(context,
@@ -71,7 +49,7 @@ class _ResponsiveLayoutScreenState extends State<ResponsiveLayoutScreen> {
       );
     }
 
-    // Once data is fetched, use LayoutBuilder for responsive design
+    //* Once data is fetched, use LayoutBuilder for responsive design
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth > webScreenwidthSize) {

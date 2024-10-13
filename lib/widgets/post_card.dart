@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:gap/gap.dart';
-import 'package:instagram_clone/models/user.dart';
+import 'package:instagram_clone/models/user.dart' as custom;
 import 'package:instagram_clone/providers/userprovider.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/screens/comment_screen.dart';
@@ -21,13 +22,15 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool islikeAnimating = false;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  final User curruser = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
       builder: (context, userProvider, child) {
         // Access the user data from the provider (nullable User)
-        final User? user = userProvider.getUser;
+        final custom.User? user = userProvider.getUser;
 
         // Check if user is null, show loading or error message if needed
         if (user == null) {
@@ -70,11 +73,12 @@ class _PostCardState extends State<PostCard> {
                     const Spacer(),
                     IconButton(
                       onPressed: () {
+                        widget.snap['uid'] == curruser.uid ?
                         showDialog(
                             context: context,
                             builder: (context) => Dialog(
                                   child: ListView(
-                                      padding:  const EdgeInsets.symmetric(vertical: 16),
+                                      padding: const EdgeInsets.symmetric(vertical: 16),
                                       shrinkWrap: true,
                                       children: [
                                         'Delete',
@@ -82,10 +86,10 @@ class _PostCardState extends State<PostCard> {
                                         'Report',
                                       ]
                                           .map((e) => InkWell(
-                                                onTap: ()async {
+                                                onTap: () async {
                                                   try {
                                                     FireStoreMethods().deletePost(
-                                                      widget.snap['postId'], 
+                                                      widget.snap['postId'],
                                                       widget.snap['postUrl'],
                                                     );
                                                   } catch (e) {
@@ -95,14 +99,40 @@ class _PostCardState extends State<PostCard> {
                                                 },
                                                 child: Container(
                                                   padding: const EdgeInsets.symmetric(
-                                                      vertical: 12,
-                                                      horizontal: 16,
-                                                    ),
+                                                    vertical: 12,
+                                                    horizontal: 16,
+                                                  ),
                                                   child: Text(e),
                                                 ),
                                               ))
                                           .toList()),
-                                ));
+                              )
+                            ) : 
+                            showDialog(
+                              context: context,
+                              builder: (context) => Dialog(
+                                child: ListView(
+                                    padding: const EdgeInsets.symmetric(vertical: 16),
+                                    shrinkWrap: true,
+                                    children: [
+                                      'Hide',
+                                      'Report',
+                                    ]
+                                        .map((e) => InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.symmetric(
+                                                  vertical: 12,
+                                                  horizontal: 16,
+                                                ),
+                                                child: Text(e),
+                                              ),
+                                            ))
+                                        .toList()),
+                                ) 
+                            );
                       },
                       icon: const Icon(Icons.more_vert_sharp),
                     ),
@@ -163,11 +193,11 @@ class _PostCardState extends State<PostCard> {
                     isAnimating: widget.snap['likes'].contains(user.uid),
                     smallLikebutton: true,
                     child: IconButton(
-                      onPressed: () => FireStoreMethods().likePost(
-                          widget.snap['postId'].toString(),
-                          user.uid,
-                          widget.snap['likes'],
-                        ),
+                        onPressed: () => FireStoreMethods().likePost(
+                              widget.snap['postId'].toString(),
+                              user.uid,
+                              widget.snap['likes'],
+                            ),
                         icon: widget.snap['likes'].contains(user.uid)
                             ? const Icon(
                                 Icons.favorite,
@@ -184,9 +214,10 @@ class _PostCardState extends State<PostCard> {
                   //* Comment Button
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(
-                        postId: widget.snap['postId'].toString(),
-                      )));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CommentScreen(
+                                postId: widget.snap['postId'].toString(),
+                              )));
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 5),

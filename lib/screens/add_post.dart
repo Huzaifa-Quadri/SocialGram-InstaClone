@@ -37,9 +37,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
       });
       if (mounted) {
         if (res == 'success') {
-        showSnackBar(context, 'Posted!');
+          showSnackBar(context, 'Posted!');
+          exit();
         }else{
-        showSnackBar(context, res.toString());
+          showSnackBar(context, res.toString());
         }
       }
       

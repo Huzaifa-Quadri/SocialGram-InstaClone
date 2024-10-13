@@ -33,7 +33,7 @@ class _CommentScreenState extends State<CommentScreen> {
         username,
         profImg,
       );
-      
+
       if (mounted) {
         if (res == 'success') {
           showSnackBar(context, "Comment Posted");
@@ -85,9 +85,21 @@ class _CommentScreenState extends State<CommentScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          if (snapshot.data == null) {
+          if (!snapshot.hasData || snapshot.hasError) {
             return const Center(
-              child: Text("No comments yet\nBe First to Comment!"),
+              child: Text("Something went Wrong!, Try restarting the App"),
+            );
+          }
+          
+          if (snapshot.data!.docs.isEmpty) {
+            return  const Center(
+              child :Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('No comments yet'),
+                  Text('Be the first one to comment...')
+                ],
+              )
             );
           }
 
