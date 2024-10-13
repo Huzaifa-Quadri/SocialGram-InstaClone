@@ -30,11 +30,46 @@ class _SignupScreenState extends State<SignupScreen> {
   bool isLoading = false;
 
   void _selectImage() async {
-    Uint8List? imgall = await pickImage(ImageSource.camera);
+    void getImage() async {
+    return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: const Text('Create a Post'),
+        children: [
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(20),
+            child: const Text('Take a Photo'),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              Uint8List file = await pickImage(ImageSource.camera);
+              setState(() {
+                _img = file;
+              });
+            },
+          ),
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(20),
+            child: const Text('Pick Image from gallery'),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              Uint8List file = await pickImage(ImageSource.gallery);
+              setState(() {
+                _img = file;
+              });
+            },
+          ),
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(20),
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
 
-    setState(() {
-      _img = imgall;
-    });
   }
 
   void _signUp() async {
@@ -93,30 +128,25 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: SafeArea(
+      child: SingleChildScrollView( // Use SingleChildScrollView
         child: Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 32,
           ),
           width: double.infinity,
-          // color: Colors.yellow.shade50,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Flexible(
-                flex: 3,
-                child: Container(),
-              ),
-              //Todo SVG image insta logo
+              const SizedBox(height: 40), // Adjust the top padding
               SvgPicture.asset(
                 "assets/images/ic_instagram.svg",
                 color: primaryColor,
                 height: 64,
               ),
               const Gap(64),
-
               Stack(
                 children: [
                   _img == null
@@ -140,8 +170,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 ],
               ),
               const Gap(24),
-
-              //todo text field of email and password
               TextFieldInput(
                   textEditingController: _registerEmailcontroller,
                   textInputType: TextInputType.emailAddress,
@@ -168,8 +196,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 hintText: "Enter Your Bio",
               ),
               const Gap(24),
-
-              //todo login button
               InkWell(
                 onTap: _signUp,
                 child: Container(
@@ -189,12 +215,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               const Gap(12),
-              Flexible(
-                flex: 2,
-                child: Container(),
-              ), //? For even segment based spacing
-
-              //todo transitioning to signing up screen
+              const SizedBox(height: 20), // Adjust the bottom padding
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -217,6 +238,7 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
