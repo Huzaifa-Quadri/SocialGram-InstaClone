@@ -32,8 +32,8 @@ class _CommentScreenState extends State<CommentScreen> {
         uid,
         username,
         profImg,
-        // [], //* for comment likes
       );
+      
       if (mounted) {
         if (res == 'success') {
           showSnackBar(context, "Comment Posted");
@@ -67,7 +67,7 @@ class _CommentScreenState extends State<CommentScreen> {
     if (user == null) {
       return const Center(child: CircularProgressIndicator());
     }
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Comments"),
@@ -77,6 +77,7 @@ class _CommentScreenState extends State<CommentScreen> {
             .collection('posts')
             .doc(widget.postId)
             .collection('comments')
+            .orderBy('datePublished', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -93,7 +94,8 @@ class _CommentScreenState extends State<CommentScreen> {
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) => CommentCard(
-              snap: snapshot.data!.docs[index],
+              snap: snapshot.data!.docs[index], 
+              currentpostId: widget.postId,   
             ),
           );
         },

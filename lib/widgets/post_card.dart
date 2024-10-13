@@ -7,6 +7,7 @@ import 'package:instagram_clone/screens/comment_screen.dart';
 
 import 'package:instagram_clone/utils/theme_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/like_Animation.dart';
 import 'package:provider/provider.dart';
 
@@ -67,14 +68,13 @@ class _PostCardState extends State<PostCard> {
                       ),
                     ),
                     const Spacer(),
-                    //todo:  make delete option work
                     IconButton(
                       onPressed: () {
                         showDialog(
                             context: context,
                             builder: (context) => Dialog(
                                   child: ListView(
-                                      padding: const EdgeInsets.symmetric(vertical: 16),
+                                      padding:  const EdgeInsets.symmetric(vertical: 16),
                                       shrinkWrap: true,
                                       children: [
                                         'Delete',
@@ -82,7 +82,17 @@ class _PostCardState extends State<PostCard> {
                                         'Report',
                                       ]
                                           .map((e) => InkWell(
-                                                onTap: () {},
+                                                onTap: ()async {
+                                                  try {
+                                                    FireStoreMethods().deletePost(
+                                                      widget.snap['postId'], 
+                                                      widget.snap['postUrl'],
+                                                    );
+                                                  } catch (e) {
+                                                    showSnackBar(context, e.toString());
+                                                  }
+                                                  Navigator.of(context).pop();
+                                                },
                                                 child: Container(
                                                   padding: const EdgeInsets.symmetric(
                                                       vertical: 12,
@@ -153,7 +163,11 @@ class _PostCardState extends State<PostCard> {
                     isAnimating: widget.snap['likes'].contains(user.uid),
                     smallLikebutton: true,
                     child: IconButton(
-                        onPressed: () {},
+                      onPressed: () => FireStoreMethods().likePost(
+                          widget.snap['postId'].toString(),
+                          user.uid,
+                          widget.snap['likes'],
+                        ),
                         icon: widget.snap['likes'].contains(user.uid)
                             ? const Icon(
                                 Icons.favorite,

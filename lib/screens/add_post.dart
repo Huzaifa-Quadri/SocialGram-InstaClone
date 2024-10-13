@@ -6,8 +6,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:instagram_clone/providers/userprovider.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/utils/utils.dart';
@@ -107,7 +107,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    custommodel.User user = Provider.of<UserProvider>(context).getUser;
+    // Handling the User model with proper null safety
+    custommodel.User? user = Provider.of<UserProvider>(context).getUser;
+    
+    // Adding null check and placeholder handling
+    if (user == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     print("Just checking values for -------------------------------------------------------------------------------------:");
     print(user.uid);
@@ -156,8 +162,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
       ),
       body: Column(
         children: [
+          _isLoading ? const LinearProgressIndicator() : const Padding(padding: EdgeInsets.only(top: 0)),
           const Gap(10),
-          const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,

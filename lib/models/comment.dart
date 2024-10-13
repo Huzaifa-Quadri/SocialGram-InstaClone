@@ -5,7 +5,7 @@ class Comment {
   final String username;
   final String commentText;
   final DateTime datePublished;
-  // final List cmtLike;
+  final List cmtLikes;
 
   Comment({
     required this.uid,
@@ -14,7 +14,7 @@ class Comment {
     required this.username,
     required this.commentText,
     required this.datePublished,
-    // required this.cmtLike,
+    required this.cmtLikes,
   });
 
   Map<String, dynamic> toJson() => {
@@ -24,5 +24,6 @@ class Comment {
         "commentId": commentId,
         "commentText": commentText,
         "datePublished": datePublished,
+        "cmtlikes" : cmtLikes,
       };
 }
