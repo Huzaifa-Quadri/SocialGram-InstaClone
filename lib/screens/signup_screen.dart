@@ -59,12 +59,11 @@ class _SignupScreenState extends State<SignupScreen> {
 
     print(res);
     
-
-      if (res == "success") {
-        if (mounted) {
-              setState(() {
-                isLoading = false;
-              });
+    if (res == "success") {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
 
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) {
@@ -80,7 +79,13 @@ class _SignupScreenState extends State<SignupScreen> {
         _biocontroller.clear();
         _passwordcontroller.clear();
       } else {
-        showSnackBar(context, res);
+        setState(() {
+          isLoading = false;
+        });
+        if (mounted) {
+          showSnackBar(context, "Some error Occured : $res");
+        }
+
         _registerEmailcontroller.clear();
         _passwordcontroller.clear();
       }
@@ -178,7 +183,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       Radius.circular(7),
                     )),
                   ),
-                  child: isLoading ? const CircularProgressIndicator() : const Text("Sign Up"),
+                  child: isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text("Sign Up"),
                 ),
               ),
               const Gap(12),

@@ -107,4 +107,8 @@ class AuthMethodFirebaseLogic {
     return res;
   }
 
+  // signout method
+  Future<void> signOut() async{
+    _auth.signOut();
+  }
 }

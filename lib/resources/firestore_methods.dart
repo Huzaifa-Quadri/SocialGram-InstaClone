@@ -1,7 +1,7 @@
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:instagram_clone/models/comment.dart';
 import 'package:instagram_clone/models/post.dart';
 import 'package:instagram_clone/resources/storage_method.dart';
@@ -93,7 +93,7 @@ class FireStoreMethods {
 
       res = "success";
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       res = e.toString();
     }
 
@@ -128,7 +128,7 @@ class FireStoreMethods {
             });
       }
     } catch (cmterr) {
-      print("This is why comment like is not working  : ${cmterr.toString()}");
+      if (kDebugMode) print("This is why comment like is not working  : ${cmterr.toString()}");
     }
   }
 
@@ -144,7 +144,7 @@ class FireStoreMethods {
       await _firestore.collection('posts').doc(postId).delete();
 
     } catch (erdel) {
-      print(erdel.toString());
+      if (kDebugMode) print(erdel.toString());
     }
   }
 
@@ -157,7 +157,39 @@ class FireStoreMethods {
       await storageReference.delete();
       print("Image successfully deleted from Firebase Storage.");
     } catch (err) {
-      print("Error while deleting image: ${err.toString()}");
+      if (kDebugMode) print("Error while deleting image: ${err.toString()}");
+    }
+  }
+
+  Future<void> followUser(String userid, String followId) async {
+    try {
+      DocumentSnapshot snap = await FirebaseFirestore.instance.collection('users').doc(userid).get();
+
+      List following = (snap.data() as dynamic)['following'];
+
+      if (following.contains(followId)) {
+        //* Unfollow
+        await _firestore.collection('users').doc(followId).update({
+          'followers' : FieldValue.arrayRemove([userid])
+        });
+
+        await _firestore.collection('users').doc(userid).update({
+          'following' : FieldValue.arrayRemove([followId])
+        });
+
+      }else{
+        //* Follow
+        await _firestore.collection('users').doc(followId).update({
+          'followers' : FieldValue.arrayUnion([userid])
+        });
+
+        await _firestore.collection('users').doc(userid).update({
+          'following' : FieldValue.arrayUnion([followId])
+        });
+      }
+
+    } catch (erfollow) {
+      if (kDebugMode) print("Error while making follow or unfollow : ${erfollow.toString()}");
     }
   }
 }
