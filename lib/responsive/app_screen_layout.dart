@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/screens/add_post.dart';
 import 'package:instagram_clone/screens/home_feed_screen.dart';
+import 'package:instagram_clone/screens/profile_screen.dart';
 import 'package:instagram_clone/screens/search_screen.dart';
 import 'package:instagram_clone/utils/theme_layout.dart';
 
@@ -47,12 +49,12 @@ class _AppScreenLayoutState extends State<AppScreenLayout> {
         controller: pagecontroller,
         onPageChanged: onPageChanged,
         physics: const NeverScrollableScrollPhysics(),
-        children: const [
-          HomeScreen(),
-          SearchScreen(),
-          AddPostScreen(),
-          Center(child: Text('Notify')),
-          Center(child: Text('profile')),
+        children:  [
+          const HomeScreen(),
+          const SearchScreen(),
+          const AddPostScreen(),
+          const Center(child: Text('Notify')),
+          ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid,),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
