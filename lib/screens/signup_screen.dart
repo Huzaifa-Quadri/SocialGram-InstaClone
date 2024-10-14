@@ -30,7 +30,6 @@ class _SignupScreenState extends State<SignupScreen> {
   bool isLoading = false;
 
   void _selectImage() async {
-    void getImage() async {
     return showDialog(
       context: context,
       builder: (context) => SimpleDialog(
@@ -68,8 +67,6 @@ class _SignupScreenState extends State<SignupScreen> {
         ],
       ),
     );
-  }
-
   }
 
   void _signUp() async {

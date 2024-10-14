@@ -26,7 +26,6 @@ class Post {
   //* object file So that we dont have to write same code wherever we use it
 
   Map<String, dynamic> toJson() => {
-        // "uid": uid,
         "uid": uid,
         "username": username,
         "description": description,
@@ -52,6 +51,5 @@ class Post {
       likes: snapshot['likes'],
     );
   }
-
   
 }
