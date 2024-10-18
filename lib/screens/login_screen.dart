@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:instagram_clone/resources/auth.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
+import 'package:instagram_clone/utils/global_variables.dart';
 
 import 'package:instagram_clone/utils/theme_layout.dart';
 import 'package:instagram_clone/utils/utils.dart';
@@ -62,11 +63,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.symmetric(
+          padding: MediaQuery.of(context).size.width > webScreenwidthSize ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.3) : const EdgeInsets.symmetric(
             horizontal: 32,
           ),
           width: double.infinity,
-          // color: Colors.yellow.shade50,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -76,11 +76,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               //Todo SVG image insta logo
               SvgPicture.asset(
-                "assets/images/ic_instagram.svg",
+                "assets/images/SocialGram.svg",  //* New app wordmark
+                height: 44,
                 color: primaryColor,
-                height: 64,
               ),
-              const Gap(64),
+              const Gap(72),
 
               //* Custom text field of email and password
               TextFieldInput(

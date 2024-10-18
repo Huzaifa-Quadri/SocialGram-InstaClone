@@ -16,7 +16,7 @@ class AppScreenLayout extends StatefulWidget {
 
 class _AppScreenLayoutState extends State<AppScreenLayout> {
   String? username;
-  int _page = 2;
+  int _page = 0;
   late PageController pagecontroller;
 
   void onTappedNav(int index) {
@@ -53,7 +53,7 @@ class _AppScreenLayoutState extends State<AppScreenLayout> {
           const HomeScreen(),
           const SearchScreen(),
           const AddPostScreen(),
-          const Center(child: Text('Notify')),
+          // const Center(child: Text('Notify')),
           ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid,),
         ],
       ),
@@ -72,8 +72,8 @@ class _AppScreenLayoutState extends State<AppScreenLayout> {
               icon: Icon(FluentIcons.search_12_regular), label: "Search"),
           BottomNavigationBarItem(
               icon: Icon(FluentIcons.add_circle_12_regular), label: "Post"),
-          BottomNavigationBarItem(
-              icon: Icon(FluentIcons.heart_12_filled), label: "Reel"),
+          // BottomNavigationBarItem(
+          //     icon: Icon(FluentIcons.play_12_filled), label: "Reel"),
           BottomNavigationBarItem(
               icon: Icon(FluentIcons.person_12_filled), label: "Profile"),
         ],

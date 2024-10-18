@@ -8,6 +8,7 @@ import 'package:instagram_clone/resources/auth.dart';
 import 'package:instagram_clone/responsive/app_screen_layout.dart';
 import 'package:instagram_clone/responsive/responsive_layout.dart';
 import 'package:instagram_clone/responsive/web_screen_layout.dart';
+import 'package:instagram_clone/utils/global_variables.dart';
 
 import 'package:instagram_clone/utils/theme_layout.dart';
 import 'package:instagram_clone/utils/utils.dart';
@@ -33,7 +34,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return showDialog(
       context: context,
       builder: (context) => SimpleDialog(
-        title: const Text('Create a Post'),
+        title: const Text('Profile Picture'),
         children: [
           SimpleDialogOption(
             padding: const EdgeInsets.all(20),
@@ -130,7 +131,7 @@ Widget build(BuildContext context) {
     body: SafeArea(
       child: SingleChildScrollView( // Use SingleChildScrollView
         child: Container(
-          padding: const EdgeInsets.symmetric(
+          padding: MediaQuery.of(context).size.width > webScreenwidthSize ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.3) : const EdgeInsets.symmetric(
             horizontal: 32,
           ),
           width: double.infinity,
@@ -139,11 +140,13 @@ Widget build(BuildContext context) {
             children: [
               const SizedBox(height: 40), // Adjust the top padding
               SvgPicture.asset(
-                "assets/images/ic_instagram.svg",
+                "assets/images/SocialGram.svg",  //* New app wordmark
+                height: 44,
                 color: primaryColor,
-                height: 64,
+                // "assets/images/ic_instagram.svg",
+                // height: 64,
               ),
-              const Gap(64),
+              const Gap(70),
               Stack(
                 children: [
                   _img == null

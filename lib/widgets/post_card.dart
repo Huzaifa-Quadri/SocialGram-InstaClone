@@ -5,6 +5,7 @@ import 'package:instagram_clone/models/user.dart' as custom;
 import 'package:instagram_clone/providers/userprovider.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/screens/comment_screen.dart';
+import 'package:instagram_clone/utils/global_variables.dart';
 
 import 'package:instagram_clone/utils/theme_layout.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +25,12 @@ class _PostCardState extends State<PostCard> {
   bool islikeAnimating = false;
   // final FirebaseAuth _auth = FirebaseAuth.instance;
   final User curruser = FirebaseAuth.instance.currentUser!;
+  bool isbookmarked = false;
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Consumer<UserProvider>(
       builder: (context, userProvider, child) {
         // Access the user data from the provider (nullable User)
@@ -40,7 +44,12 @@ class _PostCardState extends State<PostCard> {
         }
 
         return Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: width > webScreenwidthSize ? secondaryColor : mobileBackgroundColor
+            ),
           color: mobileBackgroundColor,
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 10).copyWith(bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,14 +240,22 @@ class _PostCardState extends State<PostCard> {
                   const Gap(10),
                   IconButton(
                     icon: const Icon(FluentIcons.send_24_regular),
-                    onPressed: () {},
+                    onPressed: () => showDMSnackbar(context),
                   ),
                   const Spacer(),
                   IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
+                      onPressed: () {
+                        setState(() {
+                          isbookmarked ? isbookmarked = false :
+                          isbookmarked = true;
+                        });
+                      },
+                      icon: isbookmarked ? const Icon(
+                        Icons.bookmark_rounded,
+                      ) : const Icon(
                         Icons.bookmark_border_outlined,
-                      ))
+                      ),
+                    )  
                 ],
               ),
               Container(
@@ -266,7 +283,12 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CommentScreen(
+                                postId: widget.snap['postId'].toString(),
+                              )));
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                   // todo optional : Show number of comments

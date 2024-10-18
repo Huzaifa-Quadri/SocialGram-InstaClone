@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:instagram_clone/resources/auth.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
+import 'package:instagram_clone/utils/global_variables.dart';
 import 'package:instagram_clone/utils/theme_layout.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/follow_button.dart';
@@ -69,12 +70,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
     return isloading
         ? const Center(
             child: CircularProgressIndicator(),
           )
         : Scaffold(
-            appBar: AppBar(
+            appBar: width > webScreenwidthSize ? null : AppBar(
               title: Text(userData['username']),
             ),
             body: ListView(
