@@ -57,6 +57,6 @@ SocialGram is a full-featured **Instagram-inspired** social media app built usin
 
 <p align="center">
   <a href="https://youtu.be/MhIjvY8Gv6g" target="_blank">
-    <img src="https://img.youtube.com/vi/71moZ-5QZaQ/0.jpg" alt="Watch the demo" width="600" />
+    <img src="https://img.youtube.com/vi/MhIjvY8Gv6g/0.jpg" alt="Watch the demo" width="600" />
   </a>
 </p>
