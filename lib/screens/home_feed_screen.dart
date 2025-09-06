@@ -16,33 +16,36 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    
+
     return Scaffold(
-        backgroundColor: width > webScreenwidthSize? webBackgroundColor : mobileBackgroundColor,
-        appBar: width > webScreenwidthSize ? null : AppBar(
-          centerTitle: false,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: SvgPicture.asset(
-                alignment: const Alignment(1, 1),
-                // "assets/images/ic_instagram.svg",
-                // height: 32,
-                "assets/images/SocialGram.svg", //* New app wordmark
-                height: 25,
-                color: primaryColor,
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (constext) => SimpleDialog(
+        backgroundColor: width > webScreenwidthSize
+            ? webBackgroundColor
+            : mobileBackgroundColor,
+        appBar: width > webScreenwidthSize
+            ? null
+            : AppBar(
+                automaticallyImplyLeading: false,
+                centerTitle: false,
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: SvgPicture.asset(
+                      alignment: const Alignment(1, 1),
+                      // "assets/images/ic_instagram.svg",
+                      // height: 32,
+                      "assets/images/SocialGram.svg", //* New app wordmark
+                      height: 25,
+                      color: primaryColor,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (constext) => SimpleDialog(
                           title: const Text('Extra Actions'),
                           children: [
                             SimpleDialogOption(
@@ -58,27 +61,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                           ],
                         ),
-                    );
-              },
-              icon: const Icon(Icons.keyboard_arrow_down_rounded),
-            ),
-            const Spacer(),
-            IconButton(
-                onPressed: () => heartnotification(context, false),
-                icon: const Icon(
-                  FluentIcons.heart_16_regular,
-                  size: 30,
-                )),
-            // todo No of unseen message count
-            Transform.rotate(
-              angle: 150,
-              child: IconButton(
-                onPressed: () => showDMSnackbar(context),
-                icon: const Icon(FluentIcons.send_24_regular),
+                      );
+                    },
+                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                      onPressed: () => heartnotification(context, false),
+                      icon: const Icon(
+                        FluentIcons.heart_16_regular,
+                        size: 30,
+                      )),
+                  // todo No of unseen message count
+                  Transform.rotate(
+                    angle: 150,
+                    child: IconButton(
+                      onPressed: () => showDMSnackbar(context),
+                      icon: const Icon(FluentIcons.send_24_regular),
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
         // body: PostCard(snap: snap));
         body: StreamBuilder(
           //* Stream builder lets us fetch data in real time without refreshing the screen while getting data from database
@@ -111,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) => Container(
                 margin: EdgeInsets.symmetric(
                   horizontal: width > webScreenwidthSize ? width * 0.2 : 0,
-                  vertical : width > webScreenwidthSize ? 15 : 0,
+                  vertical: width > webScreenwidthSize ? 15 : 0,
                 ),
                 child: PostCard(
                   snap: snapshot.data!.docs[index].data(),

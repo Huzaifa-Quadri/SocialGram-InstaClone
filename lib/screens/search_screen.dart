@@ -32,6 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: mobileBackgroundColor,
           title: TextField(
             controller: _searchcontroller,
@@ -147,7 +148,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           : const [
                               QuiltedGridTile(2, 1), // A large vertical tile
                               QuiltedGridTile(1, 1), // A smaller square tile
-                              QuiltedGridTile(1, 1), // Another smaller square tile
+                              QuiltedGridTile(
+                                  1, 1), // Another smaller square tile
                               QuiltedGridTile(1, 2), // A wide horizontal tile
                             ],
                     ),
