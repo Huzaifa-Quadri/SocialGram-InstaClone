@@ -54,3 +54,9 @@ SocialGram is a full-featured **Instagram-inspired** social media app built usin
 ---
 
 ## 📷 Video Preview - 
+
+<p align="center">
+  <a href="https://youtu.be/MhIjvY8Gv6g" target="_blank">
+    <img src="https://img.youtube.com/vi/MhIjvY8Gv6g/0.jpg" alt="Watch the demo" width="600" />
+  </a>
+</p>
