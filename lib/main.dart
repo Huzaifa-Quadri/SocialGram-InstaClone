@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:instagram_clone/providers/userprovider.dart';
-import 'env.dart';
 
 import 'package:instagram_clone/responsive/app_screen_layout.dart';
 import 'package:instagram_clone/responsive/responsive_layout.dart';
@@ -14,17 +14,18 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   try {
     //? try catch block to catch any error if happens in intializing or running app
     if (kIsWeb) {
       await Firebase.initializeApp(
-        options: const FirebaseOptions(
-            apiKey: Env.API_KEY, //Hidden for Security reasons
-            authDomain: Env.AUTH_DOMAIN,
-            projectId: Env.PROJECT_ID,
-            storageBucket: Env.STORAGE_BUCKET,
-            messagingSenderId: Env.MESSAGING_SENDER_ID,
-            appId: Env.APP_ID),
+        options: FirebaseOptions(
+            apiKey: dotenv.env['API_KEY'] ?? '', //Read from .env
+            authDomain: dotenv.env['AUTH_DOMAIN'] ?? '',
+            projectId: dotenv.env['PROJECT_ID'] ?? '',
+            storageBucket: dotenv.env['STORAGE_BUCKET'] ?? '',
+            messagingSenderId: dotenv.env['MESSAGING_SENDER_ID'] ?? '',
+            appId: dotenv.env['APP_ID'] ?? ''),
       );
     } else {
       await Firebase.initializeApp();

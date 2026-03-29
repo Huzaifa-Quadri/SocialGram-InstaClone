@@ -1,0 +1,15 @@
+.git/
+.dart_tool/
+.idea/
+.vscode/
+build/
+android/
+ios/
+macos/
+windows/
+linux/
+test/
+*~
+*.log
+*.swp
+*.class
